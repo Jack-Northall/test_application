@@ -1,4 +1,3 @@
-// lib/screens/blank_page.dart
 import 'package:flutter/material.dart';
 
 class BlankPage extends StatelessWidget {

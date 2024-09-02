@@ -13,6 +13,7 @@ dependencies:
   flutter:
     sdk: flutter  
   table_calendar: ^3.0.7
+  uuid: ^3.0.7
 
   cupertino_icons: ^1.0.6
 
