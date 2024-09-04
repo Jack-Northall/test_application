@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_application/widgets/service_selection_widget.dart';
 import '../models/booking.dart';
 
 class BookingDetailsPage extends StatefulWidget {
@@ -12,10 +13,25 @@ class BookingDetailsPage extends StatefulWidget {
 }
 
 class _BookingDetailsPageState extends State<BookingDetailsPage> {
-  final TextEditingController _revenueController = TextEditingController();
-  final TextEditingController _costController = TextEditingController();
+  CoreService? _selectedService;
+  int _nailArt = 0;
+  int _nailRemoval = 0;
+  int _currentStep = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedService = widget.booking.coreService;
+    _nailArt = widget.booking.nailArt;
+    _nailRemoval = widget.booking.nailRemoval;
+  }
 
   void _saveDetails() {
+    setState(() {
+      widget.booking.coreService = _selectedService;
+      widget.booking.nailArt = _nailArt;
+      widget.booking.nailRemoval = _nailRemoval;
+    });
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Details saved for ${widget.booking.name}')),
@@ -30,37 +46,57 @@ class _BookingDetailsPageState extends State<BookingDetailsPage> {
       appBar: AppBar(
         title: const Text('Booking Details'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Booking Name: ${widget.booking.name}'),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _revenueController,
-              decoration: const InputDecoration(
-                labelText: 'Revenue',
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.number,
+      body: Stepper(
+        currentStep: _currentStep,
+        onStepContinue: () {
+          if (_currentStep < 1) {
+            setState(() {
+              _currentStep += 1;
+            });
+          } else {
+            _saveDetails();
+          }
+        },
+        onStepCancel: () {
+          if (_currentStep > 0) {
+            setState(() {
+              _currentStep -= 1;
+            });
+          }
+        },
+        steps: [
+          Step(
+            title: const Text('Service Selection'),
+            content: ServiceSelectionWidget(
+              selectedService: _selectedService,
+              nailArt: _nailArt,
+              nailRemoval: _nailRemoval,
+              onServiceSelected: (service) {
+                setState(() {
+                  _selectedService = service;
+                });
+              },
+              onNailArtChanged: (value) {
+                setState(() {
+                  _nailArt = value;
+                });
+              },
+              onNailRemovalChanged: (value) {
+                setState(() {
+                  _nailRemoval = value;
+                });
+              },
             ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _costController,
-              decoration: const InputDecoration(
-                labelText: 'Cost',
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _saveDetails,
-              child: const Text('Save Details'),
-            ),
-          ],
-        ),
+            isActive: _currentStep >= 0,
+            state: _currentStep > 0 ? StepState.complete : StepState.indexed,
+          ),
+          Step(
+            title: const Text('Review & Save'),
+            content: const Text('Review the details and click "Save Details" to confirm.'),
+            isActive: _currentStep >= 1,
+            state: _currentStep == 1 ? StepState.editing : StepState.indexed,
+          ),
+        ],
       ),
     );
   }

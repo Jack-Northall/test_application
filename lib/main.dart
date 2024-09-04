@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Color(0xFF0A0E21),
           foregroundColor: Color(0xFFFFFFFF),
         ),
-        scaffoldBackgroundColor: Color(0xFF0A0E21),
+        scaffoldBackgroundColor: const Color(0xFF0A0E21),
         textTheme: const TextTheme(
           bodyMedium: TextStyle(
             color: Color(0XFFFFFFFF),

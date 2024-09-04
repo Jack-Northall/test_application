@@ -118,7 +118,7 @@ class _CalendarPageState extends State<CalendarPage> {
         final booking = _bookings[dateKey]![index];
         return Card(
           child: ListTile(
-            leading: Icon(Icons.calendar_month),
+            leading: const Icon(Icons.calendar_month),
             title: Text(booking.name),
             subtitle: 
               Text('Booking ID: ${booking.id}'),
