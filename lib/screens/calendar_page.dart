@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:test_application/widgets/calendar_widget.dart';
 import 'package:test_application/screens/create_booking_page.dart';
 import '../models/booking.dart';
 
@@ -12,27 +12,18 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   final Map<DateTime, List<Booking>> _bookings = {};
 
-  @override
-  void initState() {
-    super.initState();
-    _selectedDay = _focusedDay;
-  }
-
   void _addBooking(Booking booking) {
     final dateKey = _dateOnly(booking.date);
-    //print('Adding booking for date: $dateKey'); // Debugging
     setState(() {
       if (_bookings.containsKey(dateKey)) {
         _bookings[dateKey]!.add(booking);
       } else {
         _bookings[dateKey] = [booking];
       }
-      //print('Current bookings for $dateKey: ${_bookings[dateKey]}'); // Debugging
     });
   }
 
@@ -40,24 +31,22 @@ class _CalendarPageState extends State<CalendarPage> {
     return DateTime(date.year, date.month, date.day);
   }
 
- void _navigateToCreateBookingPage() {
-  if (_selectedDay == null) {
-    return;
-  }
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => CreateBookingPage(
-        onBookingCreated: (booking) {
-          _addBooking(booking);
-          Navigator.pop(context);
-        },
-        selectedDate: _selectedDay!,
+  void _navigateToCreateBookingPage() {
+    if (_selectedDay == null) return;
+    
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CreateBookingPage(
+          onBookingCreated: (booking) {
+            _addBooking(booking);
+            Navigator.pop(context);
+          },
+          selectedDate: _selectedDay!,
+        ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,26 +56,15 @@ class _CalendarPageState extends State<CalendarPage> {
       ),
       body: Column(
         children: [
-          TableCalendar(
-            firstDay: DateTime.utc(2010, 10, 16),
-            lastDay: DateTime.utc(2030, 3, 14),
-            focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+          CalendarWidget(
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 _selectedDay = selectedDay;
                 _focusedDay = focusedDay;
               });
             },
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
+            focusedDay: _focusedDay,
+            selectedDay: _selectedDay,
           ),
           ElevatedButton(
             onPressed: _navigateToCreateBookingPage,
@@ -104,10 +82,6 @@ class _CalendarPageState extends State<CalendarPage> {
     }
 
     final dateKey = _dateOnly(_selectedDay!);
-    //print('Selected Day: $_selectedDay');  // Debugging
-    //print('Date Key: $dateKey');  // Debugging
-    //print('Bookings for Date Key: ${_bookings[dateKey]}');  // Debugging
-
     if (!_bookings.containsKey(dateKey) || _bookings[dateKey]!.isEmpty) {
       return const Center(child: Text('No bookings for the selected date.'));
     }
@@ -120,8 +94,7 @@ class _CalendarPageState extends State<CalendarPage> {
           child: ListTile(
             leading: const Icon(Icons.calendar_month),
             title: Text(booking.name),
-            subtitle: 
-              Text('Booking ID: ${booking.id}'),
+            subtitle: Text('Booking ID: ${booking.id}'),
             isThreeLine: false,
           ),
         );

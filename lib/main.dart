@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'Screens/blank_page.dart';
 import 'Screens/calendar_page.dart';
+import '../schemes/colors.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -16,10 +18,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Home Screen',
       theme: ThemeData.dark().copyWith(
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF0A0E21),
+          backgroundColor: AppColors.secondaryColor,
           foregroundColor: Color(0xFFFFFFFF),
         ),
-        scaffoldBackgroundColor: const Color(0xFF0A0E21),
+        scaffoldBackgroundColor: AppColors.backgroundColor,
         textTheme: const TextTheme(
           bodyMedium: TextStyle(
             color: Color(0XFFFFFFFF),
