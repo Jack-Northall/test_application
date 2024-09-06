@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_application/schemes/colors.dart';
 import 'package:test_application/widgets/calendar_widget.dart';
 import 'package:test_application/screens/create_booking_page.dart';
 import '../models/booking.dart';
@@ -52,7 +53,7 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Calendar Page'),
+        title: const Text('Bookings'),
       ),
       body: Column(
         children: [
@@ -68,6 +69,10 @@ class _CalendarPageState extends State<CalendarPage> {
           ),
           ElevatedButton(
             onPressed: _navigateToCreateBookingPage,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryColor,
+              foregroundColor: AppColors.textColor,
+            ),
             child: const Text('Add Booking'),
           ),
           Expanded(child: _buildBookingList()),
@@ -92,10 +97,11 @@ class _CalendarPageState extends State<CalendarPage> {
         final booking = _bookings[dateKey]![index];
         return Card(
           child: ListTile(
-            leading: const Icon(Icons.calendar_month),
-            title: Text(booking.name),
-            subtitle: Text('Booking ID: ${booking.id}'),
+            leading: const Icon(Icons.calendar_month,color: AppColors.textColor),
+            title: Text(booking.name, style: const TextStyle(color: AppColors.textColor),),
+            subtitle: Text('Booking ID: ${booking.id}',style: const TextStyle(color: AppColors.textColor)),
             isThreeLine: false,
+            tileColor: AppColors.primaryColor,
           ),
         );
       },

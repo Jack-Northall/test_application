@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_application/schemes/colors.dart';
 import '../models/booking.dart';
 
 class ServiceSelectionWidget extends StatefulWidget {
@@ -66,7 +67,8 @@ class _ServiceSelectionWidgetState extends State<ServiceSelectionWidget> {
           value: widget.nailArt.toDouble(),
           min: 0,
           max: 10,
-          //label: '${widget.nailArt}',
+          activeColor: AppColors.accentColor,
+          inactiveColor: AppColors.primaryColor,
           onChanged: (double value) {
             widget.onNailArtChanged(value.toInt());
           },
@@ -77,7 +79,8 @@ class _ServiceSelectionWidgetState extends State<ServiceSelectionWidget> {
           value: widget.nailRemoval.toDouble(),
           min: 0,
           max: 10,
-          //label: '${widget.nailRemoval}',
+          activeColor: AppColors.accentColor,
+          inactiveColor: AppColors.primaryColor,
           onChanged: (double value) {
             widget.onNailRemovalChanged(value.toInt());
           },
@@ -91,7 +94,7 @@ class _ServiceSelectionWidgetState extends State<ServiceSelectionWidget> {
     return GestureDetector(
       onTap: () => widget.onServiceSelected(service),
       child: Card(
-        color: isSelected ? Colors.white : Colors.blueGrey,
+        color: isSelected ? AppColors.accentColor : AppColors.primaryColor,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -101,8 +104,8 @@ class _ServiceSelectionWidgetState extends State<ServiceSelectionWidget> {
                 icon,
                 size: 40,
                 color: isSelected
-                    ? const Color.fromARGB(255, 72, 199, 242)
-                    : Colors.grey,
+                    ? AppColors.textColor
+                    : AppColors.textColor,
               ),
               const SizedBox(height: 10),
               Center(
@@ -113,8 +116,8 @@ class _ServiceSelectionWidgetState extends State<ServiceSelectionWidget> {
                     style: TextStyle(
                       fontSize: 16,
                       color: isSelected
-                          ? const Color.fromARGB(255, 72, 199, 242)
-                          : Colors.grey,
+                          ? AppColors.textColor
+                          : AppColors.textColor,
                     ),
                     maxLines: 1, // Prevents text wrapping
                     overflow: TextOverflow.ellipsis, // Adds ellipsis if text overflows

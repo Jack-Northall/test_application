@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/booking.dart';
+import '../schemes/colors.dart';
 import 'booking_details_page.dart';
 
 class CreateBookingPage extends StatefulWidget {
@@ -38,18 +39,23 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create Booking'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('Create Booking'),
+    ),
+    body: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: _nameController,
+              maxLength: 50,
               decoration: const InputDecoration(
                 labelText: 'Booking Name',
                 border: OutlineInputBorder(),
@@ -58,11 +64,16 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _handleCreateBooking,
+              style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryColor,
+              foregroundColor: AppColors.textColor,
+            ),
               child: const Text('Save Booking'),
             ),
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

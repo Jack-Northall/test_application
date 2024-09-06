@@ -8,13 +8,14 @@ class CalendarWidget extends StatefulWidget {
   final DateTime? selectedDay;
 
   const CalendarWidget({
-    Key? key,
+    super.key,
     required this.onDaySelected,
     required this.focusedDay,
     required this.selectedDay,
-  }) : super(key: key);
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _CalendarWidgetState createState() => _CalendarWidgetState();
 }
 
@@ -28,15 +29,36 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       lastDay: DateTime.utc(2050, 1, 1),
       focusedDay: widget.focusedDay,
       calendarFormat: _calendarFormat,
+      daysOfWeekStyle: const DaysOfWeekStyle(
+        weekdayStyle: TextStyle(
+          color: AppColors.textColor,        
+        ),
+        weekendStyle: TextStyle(
+          color: AppColors.textColor,
+        ),
+      ),
       calendarStyle: const CalendarStyle(
         //Selected BoxStyling
         selectedDecoration: BoxDecoration(
-          color: AppColors.secondaryColor,
+          color: AppColors.accentColor,
           shape: BoxShape.circle,
         ),
         //Selected TextStyling
         selectedTextStyle: TextStyle(
           color: Colors.black,
+        ),
+        //Today BoxStyling
+        todayDecoration: BoxDecoration(
+          color: AppColors.primaryColor,
+          shape: BoxShape.circle,
+        ),
+        //Today TextStyling
+        todayTextStyle: TextStyle(
+          color: AppColors.textColor,
+        ),
+        //Weekend TextStyling
+        weekendTextStyle: TextStyle(
+          color: AppColors.textColor,
         ),
       ),
       selectedDayPredicate: (day) {

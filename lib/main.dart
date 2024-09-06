@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Home Screen',
       theme: ThemeData.dark().copyWith(
         appBarTheme: const AppBarTheme(
-          backgroundColor: AppColors.secondaryColor,
+          backgroundColor: AppColors.primaryColor,
           foregroundColor: Color(0xFFFFFFFF),
         ),
         scaffoldBackgroundColor: AppColors.backgroundColor,
