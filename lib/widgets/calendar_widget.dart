@@ -61,6 +61,11 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           color: AppColors.textColor,
         ),
       ),
+      headerStyle: const HeaderStyle(
+        formatButtonVisible: false,
+        leftChevronIcon: Icon(Icons.chevron_left_rounded, color: AppColors.textColor),
+        rightChevronIcon: Icon(Icons.chevron_right_rounded, color: AppColors.textColor),
+      ),
       selectedDayPredicate: (day) {
         return isSameDay(widget.selectedDay, day);
       },

@@ -1,15 +1,17 @@
+// lib/screens/calendar_page.dart
 import 'package:flutter/material.dart';
 import 'package:test_application/schemes/colors.dart';
 import 'package:test_application/widgets/calendar_widget.dart';
+import 'package:test_application/widgets/booking_details_dialog.dart';  // Import the new dialog widget
 import 'package:test_application/screens/create_booking_page.dart';
 import '../models/booking.dart';
+import '../models/time_formatter.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _CalendarPageState createState() => _CalendarPageState();
+  State<CalendarPage> createState() => _CalendarPageState();
 }
 
 class _CalendarPageState extends State<CalendarPage> {
@@ -34,7 +36,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
   void _navigateToCreateBookingPage() {
     if (_selectedDay == null) return;
-    
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -70,7 +72,7 @@ class _CalendarPageState extends State<CalendarPage> {
           ElevatedButton(
             onPressed: _navigateToCreateBookingPage,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryColor,
+              backgroundColor: AppColors.secondaryColor,
               foregroundColor: AppColors.textColor,
             ),
             child: const Text('Add Booking'),
@@ -95,13 +97,27 @@ class _CalendarPageState extends State<CalendarPage> {
       itemCount: _bookings[dateKey]!.length,
       itemBuilder: (context, index) {
         final booking = _bookings[dateKey]![index];
+        final timeString = TimeFormatter.formatTimeOfDay(booking.time);
+
         return Card(
           child: ListTile(
-            leading: const Icon(Icons.calendar_month,color: AppColors.textColor),
-            title: Text(booking.name, style: const TextStyle(color: AppColors.textColor),),
-            subtitle: Text('Booking ID: ${booking.id}',style: const TextStyle(color: AppColors.textColor)),
+            leading: const Icon(Icons.calendar_month, color: AppColors.textColor),
+            title: Text(booking.name, style: const TextStyle(color: AppColors.textColor)),
+            subtitle: Text(timeString, style: const TextStyle(color: AppColors.textColor)),
             isThreeLine: false,
             tileColor: AppColors.primaryColor,
+            trailing: ElevatedButton(
+              onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return BookingDetailsDialog(booking: booking);
+                },
+              ),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: AppColors.textColor, backgroundColor: AppColors.secondaryColor,
+              ),
+              child: const Text('View'),
+            ),
           ),
         );
       },

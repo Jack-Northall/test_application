@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'widgets/bottom_nav_bar.dart';
+import 'screens/blank_page.dart';
+import 'screens/calendar_page.dart';
 import 'screens/home_screen.dart';
-import 'Screens/blank_page.dart';
-import 'Screens/calendar_page.dart';
 import '../schemes/colors.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Home Screen',
+      title: 'Flutter Navigation Example',
       theme: ThemeData.dark().copyWith(
         appBarTheme: const AppBarTheme(
           backgroundColor: AppColors.primaryColor,
@@ -28,11 +28,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomeScreen(),
-      routes: {
-        '/blankPage': (context) => const BlankPage(),
-        '/calendarPage': (context) => const CalendarPage(),
-      },
+      home: const BottomNavBar(), // Set BottomNavBar as the home
     );
   }
 }

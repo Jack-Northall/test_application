@@ -10,31 +10,11 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Home'),
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/blankPage');
-              },
-              style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryColor,
-              foregroundColor: AppColors.textColor,
-            ),
-              child: const Text('Go to Blank Page'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/calendarPage');
-              },
-              style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryColor,
-              foregroundColor: AppColors.textColor,
-            ),
-              child: const Text('Go to Calendar Page'),
-            ),
+            SizedBox(height: 20),
           ],
         ),
       ),
