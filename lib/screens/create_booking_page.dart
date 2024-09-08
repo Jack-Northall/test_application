@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:test_application/screens/booking_details_page.dart';
 import '../models/booking.dart';
 import '../schemes/colors.dart';
-import 'booking_details_page.dart';
 
 class CreateBookingPage extends StatefulWidget {
   final Function(Booking) onBookingCreated;
@@ -14,6 +14,7 @@ class CreateBookingPage extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _CreateBookingPageState createState() => _CreateBookingPageState();
 }
 
@@ -24,37 +25,44 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
   final TextEditingController _minuteController = TextEditingController();
 
   // Handle booking creation
-  void _handleCreateBooking() {
-    final bookingName = _nameController.text;
-    final bookingDetails = _detailsController.text;
-    final int? hour = int.tryParse(_hourController.text);
-    final int? minute = int.tryParse(_minuteController.text);
+void _handleCreateBooking() {
+  final bookingName = _nameController.text;
+  final bookingDetails = _detailsController.text;
+  final int? hour = int.tryParse(_hourController.text);
+  final int? minute = int.tryParse(_minuteController.text);
 
-    if (bookingName.isNotEmpty && hour != null && minute != null) {
-      final bookingTime = TimeOfDay(hour: hour, minute: minute);
-      final booking = Booking(
-        name: bookingName,
-        details: bookingDetails,
-        time: bookingTime,
-        date: widget.selectedDate,
-      );
-      widget.onBookingCreated(booking);
+  if (bookingName.isNotEmpty && hour != null && minute != null) {
+    final bookingTime = TimeOfDay(hour: hour, minute: minute);
+    final booking = Booking(
+      name: bookingName,
+      details: bookingDetails,
+      time: bookingTime,
+      date: widget.selectedDate,
+    );
+    widget.onBookingCreated(booking);
 
-      // Navigate to booking details page
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => BookingDetailsPage(
-            booking: booking,
-          ),
+    // Navigate to BookingDetailsPage with onBookingUpdated callback
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BookingDetailsPage(
+          booking: booking,
+          onBookingUpdated: (updatedBooking) {
+            // Handle the updated booking here, if needed
+            // For example, you might want to update the local state or persist changes
+            print('Booking updated: ${updatedBooking.name}');
+          },
         ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter valid booking details and time')),
-      );
-    }
+      ),
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please enter valid booking details and time')),
+    );
   }
+}
+
+
 
   @override
   Widget build(BuildContext context) {

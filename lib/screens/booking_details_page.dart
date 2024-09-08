@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:test_application/widgets/service_selection_widget.dart';
+import '../widgets/service_selection_widget.dart';
 import '../models/booking.dart';
 
 class BookingDetailsPage extends StatefulWidget {
   final Booking booking;
+  final void Function(Booking updatedBooking) onBookingUpdated;
 
-  const BookingDetailsPage({super.key, required this.booking});
+  const BookingDetailsPage({
+    super.key,
+    required this.booking,
+    required this.onBookingUpdated,
+  });
 
   @override
-  // ignore: library_private_types_in_public_api
-  _BookingDetailsPageState createState() => _BookingDetailsPageState();
+  State<BookingDetailsPage> createState() => _BookingDetailsPageState();
 }
 
 class _BookingDetailsPageState extends State<BookingDetailsPage> {
@@ -21,22 +25,34 @@ class _BookingDetailsPageState extends State<BookingDetailsPage> {
   @override
   void initState() {
     super.initState();
+    // Initialize state with booking details
     _selectedService = widget.booking.coreService;
     _nailArt = widget.booking.nailArt;
     _nailRemoval = widget.booking.nailRemoval;
   }
 
   void _saveDetails() {
-    setState(() {
-      widget.booking.coreService = _selectedService;
-      widget.booking.nailArt = _nailArt;
-      widget.booking.nailRemoval = _nailRemoval;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Details saved for ${widget.booking.name}')),
+    // Create a new Booking object with updated details
+    final updatedBooking = Booking(
+      id: widget.booking.id, // Preserve the original ID
+      name: widget.booking.name,
+      details: widget.booking.details,
+      time: widget.booking.time,
+      date: widget.booking.date,
+      coreService: _selectedService,
+      nailArt: _nailArt,
+      nailRemoval: _nailRemoval,
     );
 
+    // Call the callback function to update the booking
+    widget.onBookingUpdated(updatedBooking);
+
+    // Show a confirmation message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Details saved for ${updatedBooking.name}')),
+    );
+
+    // Navigate back to the previous screen
     Navigator.pop(context);
   }
 

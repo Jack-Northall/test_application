@@ -1,0 +1,60 @@
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+import '../models/booking.dart';
+
+class DatabaseHelper {
+  static final DatabaseHelper _instance = DatabaseHelper._internal();
+  factory DatabaseHelper() => _instance;
+  DatabaseHelper._internal();
+
+  static Database? _database;
+
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+    _database = await _initDatabase();
+    return _database!;
+  }
+
+  Future<Database> _initDatabase() async {
+    return openDatabase(
+      join(await getDatabasesPath(), 'booking_database.db'),
+      onCreate: (db, version) {
+        return db.execute(
+          "CREATE TABLE bookings("
+          "id TEXT PRIMARY KEY, "
+          "name TEXT, "
+          "details TEXT, "
+          "time TEXT, "
+          "date TEXT, "
+          "coreService TEXT, "
+          "nailArt INTEGER, "
+          "nailRemoval INTEGER)",
+        );
+      },
+      version: 2, // Increment the version number when you make changes
+    );
+  }
+
+  Future<void> insertBooking(Booking booking) async {
+    final db = await database;
+    await db.insert(
+      'bookings',
+      booking.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Booking>> getBookingsForDate(DateTime date) async {
+    final db = await database;
+    final dateString = date.toIso8601String(); // Convert date to string
+    final List<Map<String, dynamic>> maps = await db.query(
+      'bookings',
+      where: "date = ?",
+      whereArgs: [dateString],
+    );
+
+    return List.generate(maps.length, (i) {
+      return Booking.fromMap(maps[i]);
+    });
+  }
+}

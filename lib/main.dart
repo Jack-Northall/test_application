@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'widgets/bottom_nav_bar.dart';
-import 'screens/blank_page.dart';
-import 'screens/calendar_page.dart';
-import 'screens/home_screen.dart';
+import '../widgets/bottom_nav_bar.dart';
 import '../schemes/colors.dart';
 
 void main() {
@@ -19,16 +16,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         appBarTheme: const AppBarTheme(
           backgroundColor: AppColors.primaryColor,
-          foregroundColor: Color(0xFFFFFFFF),
+          foregroundColor: AppColors.textColor,
         ),
         scaffoldBackgroundColor: AppColors.backgroundColor,
         textTheme: const TextTheme(
           bodyMedium: TextStyle(
-            color: Color(0XFFFFFFFF),
+            color: AppColors.textColor,
           ),
         ),
       ),
-      home: const BottomNavBar(), // Set BottomNavBar as the home
+      home: const BottomNavBar(),
     );
   }
 }

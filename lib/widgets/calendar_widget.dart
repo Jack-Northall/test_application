@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:test_application/schemes/colors.dart';
+import '../schemes/colors.dart';
 
 class CalendarWidget extends StatefulWidget {
   final Function(DateTime, DateTime) onDaySelected;

@@ -1,6 +1,5 @@
-// lib/widgets/bottom_nav_bar.dart
 import 'package:flutter/material.dart';
-import 'package:test_application/schemes/colors.dart';
+import '../schemes/colors.dart';
 import '../screens/home_screen.dart';
 import '../screens/calendar_page.dart';
 import '../screens/blank_page.dart';

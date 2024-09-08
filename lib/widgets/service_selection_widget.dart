@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_application/schemes/colors.dart';
+import '../schemes/colors.dart';
 import '../models/booking.dart';
 
 class ServiceSelectionWidget extends StatefulWidget {
@@ -119,8 +119,8 @@ class _ServiceSelectionWidgetState extends State<ServiceSelectionWidget> {
                           ? AppColors.textColor
                           : AppColors.textColor,
                     ),
-                    maxLines: 1, // Prevents text wrapping
-                    overflow: TextOverflow.ellipsis, // Adds ellipsis if text overflows
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),

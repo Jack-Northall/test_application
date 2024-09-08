@@ -12,6 +12,8 @@ environment:
 dependencies:  
   flutter:
     sdk: flutter  
+  sqflite: ^2.0.0+3
+  path: ^1.8.0
   table_calendar: ^3.0.7
   uuid: ^3.0.7
 

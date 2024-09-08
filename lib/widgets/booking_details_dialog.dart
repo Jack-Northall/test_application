@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/booking.dart';
 import '../schemes/colors.dart';
-import '../models/time_formatter.dart';
+import '../schemes/time_formatter.dart';
 
 class BookingDetailsDialog extends StatelessWidget {
   final Booking booking;

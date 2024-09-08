@@ -1,11 +1,11 @@
-// lib/screens/calendar_page.dart
 import 'package:flutter/material.dart';
-import 'package:test_application/schemes/colors.dart';
-import 'package:test_application/widgets/calendar_widget.dart';
-import 'package:test_application/widgets/booking_details_dialog.dart';  // Import the new dialog widget
-import 'package:test_application/screens/create_booking_page.dart';
+import 'package:test_application/databases/database_helper';
+import '../schemes/colors.dart';
+import '../widgets/calendar_widget.dart';
+import '../widgets/booking_details_dialog.dart';
+import '../screens/create_booking_page.dart';
 import '../models/booking.dart';
-import '../models/time_formatter.dart';
+import '../schemes/time_formatter.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -19,8 +19,24 @@ class _CalendarPageState extends State<CalendarPage> {
   DateTime? _selectedDay;
   final Map<DateTime, List<Booking>> _bookings = {};
 
-  void _addBooking(Booking booking) {
+  @override
+  void initState() {
+    super.initState();
+    _loadBookings();
+  }
+
+  void _loadBookings() async {
+    final dateKey = _dateOnly(_selectedDay ?? _focusedDay);
+    final bookings = await DatabaseHelper().getBookingsForDate(dateKey);
+    setState(() {
+      _bookings[dateKey] = bookings;
+    });
+  }
+
+  void _addBooking(Booking booking) async {
     final dateKey = _dateOnly(booking.date);
+    await DatabaseHelper().insertBooking(booking);
+
     setState(() {
       if (_bookings.containsKey(dateKey)) {
         _bookings[dateKey]!.add(booking);
@@ -37,13 +53,15 @@ class _CalendarPageState extends State<CalendarPage> {
   void _navigateToCreateBookingPage() {
     if (_selectedDay == null) return;
 
-    Navigator.push(
+Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => CreateBookingPage(
           onBookingCreated: (booking) {
-            _addBooking(booking);
-            Navigator.pop(context);
+            if (mounted) {
+              _addBooking(booking);
+              Navigator.pop(context);
+            }
           },
           selectedDate: _selectedDay!,
         ),
@@ -64,6 +82,7 @@ class _CalendarPageState extends State<CalendarPage> {
               setState(() {
                 _selectedDay = selectedDay;
                 _focusedDay = focusedDay;
+                _loadBookings(); // Load bookings for the selected date
               });
             },
             focusedDay: _focusedDay,
